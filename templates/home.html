@@ -1,0 +1,22 @@
+{% extends "template.html" %}
+
+{% block content %}
+<h2>Okta Redirect Flow + Flask</h2>
+
+{% if current_user.is_authenticated %}
+<br>
+<div>
+    <p>Welcome back, <span></span>!</p>
+    <p>You have successfully authenticated against your Okta org, and have been redirected back to this application.</p>
+    <p>Visit the <a href="{{ url_for('profile') }}">My Profile</a> page in this application to view the information
+        retrieved with your OAuth Access Token.</p>
+</div>
+{% else %}
+<br>
+<div>
+    <p>If you're viewing this page then you have successfully configured and started this example server.</p>
+    <p>This example shows you how to to add the <a href="https://developer.okta.com/authentication-guide/implementing-authentication/auth-code.html">Redirect Flow</a> to your Flask application.</p>
+    <p>When you click the login button, you will be redirected to the login page on your Okta org.</p>
+</div>
+{% endif %}
+{% endblock content %}
