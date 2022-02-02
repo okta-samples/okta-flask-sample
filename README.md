@@ -15,8 +15,8 @@ This code sample demonstrates
 To run this example, run the following commands:
 
 ```shell
-git clone https://github.com/oktadev/okta-python-quickstart.git
-cd okta-python-quickstart
+git clone https://github.com/okta-samples/okta-flask-sample.git
+cd okta-flask-sample
 pip install -r requirements.txt
 ```
 

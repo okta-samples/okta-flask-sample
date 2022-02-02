@@ -1,0 +1,17 @@
+oauthClient:
+  redirectUris:
+    - http://localhost:8080/authorization-code/callback
+  applicationType: web
+trustedOrigins:
+  - http://localhost:8080/
+
+directions: |+2
+  Okta configuration written to: .okta.env
+  
+  Install the dependencies using pip:
+
+      pip install -r requirements.txt
+
+  Run this application with:
+
+      python3 -m flask run --port=8080
