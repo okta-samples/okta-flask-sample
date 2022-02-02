@@ -13,7 +13,7 @@ from flask_login import (
 
 from user import User
 
-load_dotenv()
+load_dotenv('.okta.env')
 
 app = Flask(__name__)
 app.config.update({'SECRET_KEY': 'SomethingNotEntirelySecret'})
@@ -48,7 +48,7 @@ def login():
 
     # build request_uri
     request_uri = "{base_url}?{query_params}".format(
-        base_url=os.environ['ORG_URL'] + "/oauth2/default/v1/authorize",
+        base_url=os.environ['ORG_URL'] + "oauth2/default/v1/authorize",
         query_params=requests.compat.urlencode(query_params)
     )
 
@@ -73,7 +73,7 @@ def callback():
                     }
     query_params = requests.compat.urlencode(query_params)
     exchange = requests.post(
-        os.environ['ORG_URL'] + "/oauth2/default/v1/token",
+        os.environ['ORG_URL'] + "oauth2/default/v1/token",
         headers=headers,
         data=query_params,
         auth=(os.environ['CLIENT_ID'], os.environ['CLIENT_SECRET']),
@@ -86,7 +86,7 @@ def callback():
     id_token = exchange["id_token"]
 
     # Authorization flow successful, get userinfo and login user
-    userinfo_response = requests.get(os.environ['ORG_URL'] + "/oauth2/default/v1/userinfo",
+    userinfo_response = requests.get(os.environ['ORG_URL'] + "oauth2/default/v1/userinfo",
                                      headers={'Authorization': f'Bearer {access_token}'}).json()
 
     unique_id = userinfo_response["sub"]
