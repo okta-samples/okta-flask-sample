@@ -10,58 +10,40 @@ This code sample demonstrates
 * Protecting routes
 * Displaying user profile information from the ID Token
 
-## Getting started
+## Prerequisites
 
-To run this example, run the following commands:
+Before running this sample, you will need the following:
 
-```shell
-git clone https://github.com/okta-samples/okta-flask-sample.git
-cd okta-flask-sample
+* [The Okta CLI Tool](https://github.com/okta/okta-cli#installation)
+* An Okta Developer Account (create one using `okta register`, or configure an existing one with `okta login`)
+
+## Get the Code
+
+Grab and configure this project using `okta start flask`.
+
+Follow the instructions printed to the console.
+
+## Run the Example
+
+To run this application, install its dependencies:
+
+```
 pip install -r requirements.txt
 ```
 
-## Create an OIDC application in Okta
-
-Create a free developer account with the following command using the [Okta CLI](https://cli.okta.com/):
-
-```shell
-okta register
-```
-
-If you already have a developer account, use `okta login` to integrate it with the Okta CLI.
-
-Provide the required information. Once you register, create a client application in Okta with the following command:
-
-```shell
-okta apps create
-```
-
-You will be prompted to select the following options:
-* Type of Application: **1: Web**
-* Redirect URI: `http://localhost:8080/authorization-code/callback`
-* Logout Redirect URI: `http://localhost:8080`
-
-The Okta CLI created an `.okta.env` file in your current directory. This file includes your Okta domain, client ID, and client secret:
+With variables set, start your app:
 
 ```
-export OKTA_OAUTH2_ISSUER=https://${yourOktaDomain}/oauth2/${authorizationServerId}
-export OKTA_OAUTH2_CLIENT_ID=${clientId}
-export OKTA_OAUTH2_CLIENT_SECRET=${clientSecret}
-```
-
-Create a `.env` file with the following details:
-
-```
-OKTA_DOMAIN={yourOktaDomain}
-CLIENT_ID={clientId}
-CLIENT_SECRET={clientSecret}
-```
-
-Start the app by running
-
-```shell
 python3 -m flask run --port=8080
 ```
+
+Navigate to http://localhost:8080 in your browser.
+
+If you see a home page that prompts you to login, then things are working!  Clicking the **Log in** button will redirect you to the Okta hosted sign-in page.
+
+You can sign in with the same account that you created when signing up for your Developer Org, or you can use a known username and password from your Okta Directory.
+
+> **Note:** If you are currently using your Developer Console, you already have a Single Sign-On (SSO) session for your Org.  You will be automatically logged into your application as the same user that is using the Developer Console.  You may want to use an incognito tab to test the flow from a blank slate.
 
 ## Helpful resources
 
