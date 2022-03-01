@@ -31,8 +31,8 @@ def load_user(user_id):
 
 
 @app.route("/")
-def home():
-    return render_template("home.html")
+def hello():
+    return render_template("hello.html")
 
 
 @app.route("/login")
@@ -55,10 +55,10 @@ def login():
     return redirect(request_uri)
 
 
-@app.route("/profile")
+@app.route("/whoami")
 @login_required
-def profile():
-    return render_template("profile.html", user=current_user)
+def whoami():
+    return render_template("whoami.html", user=current_user)
 
 
 @app.route("/authorization-code/callback")
@@ -102,14 +102,14 @@ def callback():
 
     login_user(user)
 
-    return redirect(url_for("profile"))
+    return redirect(url_for("whoami"))
 
 
 @app.route("/logout", methods=["GET", "POST"])
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("home"))
+    return redirect(url_for("hello"))
 
 
 if __name__ == '__main__':
