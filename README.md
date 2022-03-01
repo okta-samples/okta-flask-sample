@@ -28,7 +28,7 @@ Follow the instructions printed to the console.
 To run this application, install its dependencies:
 
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 With variables set, start your app:
