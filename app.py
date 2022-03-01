@@ -3,6 +3,7 @@ import requests
 
 from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, request, url_for
+from flask_cors import CORS
 from flask_login import (
     LoginManager,
     current_user,
@@ -17,6 +18,7 @@ load_dotenv('.okta.env')
 
 app = Flask(__name__)
 app.config.update({'SECRET_KEY': 'SomethingNotEntirelySecret'})
+CORS(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
