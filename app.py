@@ -1,6 +1,6 @@
 import os
-import uuid
 import requests
+import secrets
 
 from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, request, session, url_for
@@ -18,7 +18,7 @@ from user import User
 load_dotenv('.okta.env')
 
 app = Flask(__name__)
-app.config.update({'SECRET_KEY': 'SomethingNotEntirelySecret'})
+app.config.update({'SECRET_KEY': secrets.token_hex(64)})
 CORS(app)
 
 login_manager = LoginManager()
@@ -38,7 +38,7 @@ def home():
 @app.route("/login")
 def login():
     # get request params
-    session['app_state'] = str(uuid.uuid4())
+    session['app_state'] = secrets.token_urlsafe(64)
     query_params = {'client_id': os.environ['CLIENT_ID'],
                     'redirect_uri': "http://localhost:5000/authorization-code/callback",
                     'scope': "openid email profile",
@@ -67,7 +67,7 @@ def callback():
     code = request.args.get("code")
     app_state = request.args.get("state")
     if app_state != session['app_state']:
-        return "The app state does not match the request"
+        return "The app state does not match"
     if not code:
         return "The code was not returned or is not accessible", 403
     query_params = {'grant_type': 'authorization_code',
