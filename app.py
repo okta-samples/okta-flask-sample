@@ -1,8 +1,9 @@
 import os
+import uuid
 import requests
 
 from dotenv import load_dotenv
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, session, url_for
 from flask_cors import CORS
 from flask_login import (
     LoginManager,
@@ -24,9 +25,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-APP_STATE = 'ApplicationState'
-NONCE = 'SampleNonce'
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.get(user_id)
@@ -40,11 +38,11 @@ def home():
 @app.route("/login")
 def login():
     # get request params
+    session['app_state'] = str(uuid.uuid4())
     query_params = {'client_id': os.environ['CLIENT_ID'],
                     'redirect_uri': "http://localhost:5000/authorization-code/callback",
                     'scope': "openid email profile",
-                    'state': APP_STATE,
-                    'nonce': NONCE,
+                    'state': session['app_state'],
                     'response_type': 'code',
                     'response_mode': 'query'}
 
@@ -67,6 +65,9 @@ def profile():
 def callback():
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     code = request.args.get("code")
+    app_state = request.args.get("state")
+    if app_state != session['app_state']:
+        return "The app state does not match the request"
     if not code:
         return "The code was not returned or is not accessible", 403
     query_params = {'grant_type': 'authorization_code',
