@@ -4,3 +4,4 @@ flask-cors==3.0.10
 python-dotenv==0.19.2
 pyOpenSSL==22.0.0
 Flask-Login==0.5.0
+Werkzeug==2.0.3
