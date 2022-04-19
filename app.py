@@ -46,7 +46,7 @@ def login():
     # calculate code challenge
     hashed = hashlib.sha256(session['code_verifier'].encode('ascii')).digest()
     encoded = base64.urlsafe_b64encode(hashed)
-    code_challenge = encoded.decode('ascii')[:-1]
+    code_challenge = encoded.decode('ascii').strip('=')
 
     # get request params
     query_params = {'client_id': os.environ['CLIENT_ID'],
