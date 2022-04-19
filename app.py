@@ -1,8 +1,11 @@
 import os
+import base64
+import hashlib
 import requests
+import secrets
 
 from dotenv import load_dotenv
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, session, url_for
 from flask_cors import CORS
 from flask_login import (
     LoginManager,
@@ -17,15 +20,12 @@ from user import User
 load_dotenv('.okta.env')
 
 app = Flask(__name__)
-app.config.update({'SECRET_KEY': 'SomethingNotEntirelySecret'})
+app.config.update({'SECRET_KEY': secrets.token_hex(64)})
 CORS(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
-APP_STATE = 'ApplicationState'
-NONCE = 'SampleNonce'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -39,12 +39,22 @@ def home():
 
 @app.route("/login")
 def login():
+    # store app state and code verifier in session
+    session['app_state'] = secrets.token_urlsafe(64)
+    session['code_verifier'] = secrets.token_urlsafe(64)
+
+    # calculate code challenge
+    hashed = hashlib.sha256(session['code_verifier'].encode('ascii')).digest()
+    encoded = base64.urlsafe_b64encode(hashed)
+    code_challenge = encoded.decode('ascii').strip('=')
+
     # get request params
     query_params = {'client_id': os.environ['CLIENT_ID'],
                     'redirect_uri': "http://localhost:5000/authorization-code/callback",
                     'scope': "openid email profile",
-                    'state': APP_STATE,
-                    'nonce': NONCE,
+                    'state': session['app_state'],
+                    'code_challenge': code_challenge,
+                    'code_challenge_method': 'S256',
                     'response_type': 'code',
                     'response_mode': 'query'}
 
@@ -67,11 +77,15 @@ def profile():
 def callback():
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     code = request.args.get("code")
+    app_state = request.args.get("state")
+    if app_state != session['app_state']:
+        return "The app state does not match"
     if not code:
         return "The code was not returned or is not accessible", 403
     query_params = {'grant_type': 'authorization_code',
                     'code': code,
-                    'redirect_uri': request.base_url
+                    'redirect_uri': request.base_url,
+                    'code_verifier': session['code_verifier'],
                     }
     query_params = requests.compat.urlencode(query_params)
     exchange = requests.post(
