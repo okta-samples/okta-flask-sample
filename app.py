@@ -51,7 +51,7 @@ def login():
     # get request params
     query_params = {'client_id': os.environ['CLIENT_ID'],
                     'redirect_uri': "http://localhost:5000/authorization-code/callback",
-                    'scope': "openid email profile",
+                    'scope': "openid email profile offline_access",
                     'state': session['app_state'],
                     'code_challenge': code_challenge,
                     'code_challenge_method': 'S256',
