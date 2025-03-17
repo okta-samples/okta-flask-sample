@@ -41,7 +41,7 @@ With variables set, start your app:
 python3 -m flask run --port=5000
 ```
 
-Navigate to http://localhost:5000 in your browser.
+Navigate to http://127.0.0.1:5000 in your browser.
 
 If you see a home page that prompts you to login, then things are working!  Clicking the **Log in** button will redirect you to the Okta hosted sign-in page.
 
