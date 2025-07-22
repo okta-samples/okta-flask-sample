@@ -12,10 +12,34 @@ This code sample demonstrates
 
 ## Prerequisites
 
-Before running this sample, you will need the following:
+Before running this sample, you will need an Okta Integrator Free Plan account. To get one, sign up for an [Integrator account](https://developer.okta.com/login). Once you have an account, sign in to your [Integrator account](https://developer.okta.com/login). Next, in the Admin Console:
 
-* [The Okta CLI Tool](https://github.com/okta/okta-cli#installation)
-* An Okta Developer Account (create one using `okta register`, or configure an existing one with `okta login`)
+1. Go to **Applications > Applications**
+2. Click **Create App Integration**
+3. Select **OIDC - OpenID Connect** as the sign-in method
+4. Select **Web Application** as the application type, then click **Next**
+5. Enter an app integration name
+6. Configure the redirect URIs:
+- Accept the default redirect URI values:
+- **Sign-in redirect URIs:** `http://localhost:5000/authorization-code/callback`
+- **Sign-out redirect URIs:** `http://localhost:5000`
+7. In the **Controlled access** section, select the appropriate access level
+8. Click **Save**
+
+### Where are my new app's credentials?
+
+Creating an OIDC Web App manually in the Admin Console configures your Okta Org with the application settings. You may also need to configure trusted origins for `http://localhost:3000` in **Security > API > Trusted Origins**.
+
+After creating the app, you can find the configuration details on the app’s **General** tab:
+- **Client ID:** Found in the **Client Credentials** section
+- **Client Secret:** Click **Show** in the **Client Credentials** section to reveal
+- **Org URL:** Found in the **Issuer URI** field for the authorization server that appears by selecting **Security > API** from the navigation pane.
+
+```text
+ORG_URL=https://dev-133337.okta.com
+CLIENT_ID=0oab8eb55Kb9jdMIr5d6
+CLIENT_SECRET=NEVER-SHOW-SECRETS
+```
 
 ## Get the Code
 
