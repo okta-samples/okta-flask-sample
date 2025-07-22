@@ -26,14 +26,16 @@ Before running this sample, you will need an Okta Integrator Free Plan account. 
 7. In the **Controlled access** section, select the appropriate access level
 8. Click **Save**
 
-### Where are my new app's credentials?
+Creating an OIDC Web App manually in the Admin Console configures your Okta Org with the application settings. You may also need to configure trusted origins for `http://localhost:5000` in **Security > API > Trusted Origins**.
 
-Creating an OIDC Web App manually in the Admin Console configures your Okta Org with the application settings. You may also need to configure trusted origins for `http://localhost:3000` in **Security > API > Trusted Origins**.
+## Get the Code
 
-After creating the app, you can find the configuration details on the app’s **General** tab:
-- **Client ID:** Found in the **Client Credentials** section
-- **Client Secret:** Click **Show** in the **Client Credentials** section to reveal
-- **Org URL:** Found in the **Issuer URI** field for the authorization server that appears by selecting **Security > API** from the navigation pane.
+```bash
+git clone https://github.com/okta-samples/okta-flask-sample.git
+cd okta-flask-sample
+```
+
+Update your `.okta.env` file with the values from your application's configuration:
 
 ```text
 ORG_URL=https://dev-133337.okta.com
@@ -41,11 +43,13 @@ CLIENT_ID=0oab8eb55Kb9jdMIr5d6
 CLIENT_SECRET=NEVER-SHOW-SECRETS
 ```
 
-## Get the Code
+### Where are my new app's credentials?
 
-Grab and configure this project using `okta start flask`.
+After creating the app, you can find the configuration details on the app’s **General** tab:
+- **Client ID:** Found in the **Client Credentials** section
+- **Client Secret:** Click **Show** in the **Client Credentials** section to reveal
+- **Org URL:** Found in the **Issuer URI** field for the authorization server that appears by selecting **Security > API** from the navigation pane.
 
-Follow the instructions printed to the console.
 
 ## Enable Refresh Token
 
